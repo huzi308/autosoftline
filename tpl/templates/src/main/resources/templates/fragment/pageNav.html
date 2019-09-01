@@ -1,0 +1,77 @@
+<#assign dollar='$'>
+                                    <pageNav th:fragment="pagination">
+                                        <#-- 总页数小于等于8 -->
+                                        <UL th:if="${dollar}{page.pages le 8}"  class="pagination" style="text-align: center">
+                                            <LI th:if="${dollar}{page.pageNum > 1}" class="pagination-prev ">
+                                                <A th:href="@{list(pageNum=${dollar}{page.pageNum} -1 )}" class="">上一页</A>
+                                            </LI>
+                                            <LI th:each="i : ${dollar}{#numbers.sequence(1, page.pages)}" th:classappend="${dollar}{page.pageNum eq i} ? 'active' : ''">
+                                                <A th:href="@{list(pageNum=${dollar}{i})}" th:text="${dollar}{i}" class="">1</A>
+                                            </LI>
+                                            <LI th:unless="${dollar}{page.pageNum == page.pages}" class="pagination-next ">
+                                                <A th:href="@{list(pageNum=${dollar}{page.pageNum} + 1)}" class="">下一页</A>
+                                            </LI>
+                                        </UL>
+                                        <#-- 总页数大于8 -->
+                                        <UL th:if="${dollar}{page.pages gt 8}"  class="pagination" style="text-align: center">
+                                            <#-- 上一页 -->
+                                            <LI th:classappend="*{first} ? 'disabled' : ''" th:if="${dollar}{page.pageNum > 1}" class="pagination-prev ">
+                                                <A th:href="@{list(pageNum=${dollar}{page.pageNum - 1})}">上一页</A>
+                                            </LI>
+                                            <LI class="pagination-first" th:classappend="${dollar}{page.pageNum eq 1} ? 'active' : ''">
+                                                <A th:href="@{?pageNum=1}">1</A>
+                                            </LI>
+                                            <#-- 当前页面小于等于4 -->
+                                            <LI th:if="${dollar}{page.pageNum le 4}" th:each="i : ${dollar}{#numbers.sequence(2,5)}" th:classappend="${dollar}{page.pageNum eq i} ? 'active' : ''" >
+                                                <A th:href="@{list(pageNum=${dollar}{i})}">
+                                                    <SPAN th:text="${dollar}{i}"></SPAN>
+                                                </A>
+                                            </LI>
+                                            <LI th:if="${dollar}{page.pageNum le 4}">
+                                                <A href="javascript:void(0);">
+                                                    <SPAN aria-hidden="true">...</SPAN>
+                                                </A>
+                                            </LI>
+                                            <#-- 最后一页与当前页面之差，小于等于3 -->
+                                            <LI th:if="${dollar}{(page.pages-page.pageNum) le 3}">
+                                                <A href="javascript:void(0);" >
+                                                    <SPAN aria-hidden="true">...</SPAN>
+                                                </A>
+                                            </LI>
+                                            <LI th:if="${dollar}{(page.pages-page.pageNum) le 3}" th:each="i : ${dollar}{#numbers.sequence(page.pages-4, page.pages-1)}" th:classappend="${dollar}{(page.pageNum + 0) eq i} ? 'active' : ''" >
+                                                <A th:href="@{list(pageNum=${dollar}{i})}">
+                                                    <SPAN th:text="${dollar}{i}"></SPAN>
+                                                </A>
+                                            </LI>
+                                            <#-- 最后一页与当前页面之差大于3，且  当前页面大于4-->
+                                            <LI th:if="${dollar}{(page.pageNum gt 4) and ((page.pages-page.pageNum) gt 3 )}">
+                                                <A href="javascript:void(0);">
+                                                    <SPAN aria-hidden="true">...</SPAN>
+                                                </A>
+                                            </LI>
+                                            <LI th:if="${dollar}{(page.pageNum gt 4) and ((page.pages-page.pageNum) gt 3 )}" th:classappend="${dollar}{page.pageNum eq page.pageNum} ? 'active' : ''">
+                                                <A th:href="@{list(pageNum=${dollar}{page.pageNum+0})}" th:text="${dollar}{page.pageNum+0}">number</A>
+                                            </LI>
+                                            <LI th:if="${dollar}{(page.pageNum gt 4) and ((page.pages-page.pageNum) gt 3 )}">
+                                                <A th:href="@{list(pageNum=${dollar}{page.pageNum+1})}" th:text="${dollar}{page.pageNum+1}">number</A>
+                                            </LI>
+                                            <LI th:if="${dollar}{(page.pageNum gt 4) and ((page.pages-page.pageNum) gt 3 )}">
+                                                <A th:href="@{list(pageNum=${dollar}{page.pageNum+2})}" th:text="${dollar}{page.pageNum+2}">number</A>
+                                            </LI>
+                                            <LI th:if="${dollar}{(page.pageNum gt 4) and ((page.pages-page.pageNum) gt 3 )}">
+                                                <A href="javascript:void(0);">
+                                                    <SPAN aria-hidden="true">...</SPAN>
+                                                </A>
+                                            </LI>
+                                            <#-- 最后一页 -->
+                                            <LI th:classappend="${dollar}{page.pageNum eq page.pages} ? 'active' : ''" >
+                                                <A th:href="@{list(pageNum=${dollar}{page.pages})}" th:text="${dollar}{page.pages}">尾页</A>
+                                            </LI>
+                                            <#-- 下一页 -->
+                                            <LI th:classappend="*{last} ? 'disabled' : ''" th:unless="${dollar}{page.pageNum == page.pages}">
+                                                <A th:href="@{list(pageNum=${dollar}{page.pageNum+1})}">
+                                                    <SPAN aria-hidden="true">下一页</SPAN>
+                                                </A>
+                                            </LI>
+                                        </UL>
+                                    </pageNav>

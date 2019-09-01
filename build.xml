@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project  name="HuXB-Code-Generator1.0"  default="help">
+
+    <property  name="pkg.name"        value="com.hxb" />
+    <property  name="pkg.path"        value="com/hxb" />
+    <property  name="renamePkgPath"   value="false"/>
+
+    <taskdef  name="hxbCodeGenerator"  classname="fmpp.tools.AntTask">
+        <classpath>
+            <pathelement  location="lib/fmpp.jar" />
+        </classpath>
+    </taskdef>
+
+    <target name="help" description="==> print help">
+        <echo>SpringBoot+MyBatis+Security+Thymeleaf+(MySQL/Oracle/H2)辅助代码生成工具使用帮助</echo>
+        <echo>--------------------------------------------------------</echo>
+        <echo>> ant help    显示代码生成工具帮助信息</echo>
+        <echo>></echo>
+        <echo>> ant clean   清理生成的文件，只保留干净的工具运行环境</echo>
+        <echo>></echo>
+        <echo>> ant app    通过模板生成应用所需文件</echo>
+        <echo>></echo>
+        <echo>--------------------------------------------------------</echo>
+    </target>
+
+    <target    name="template" >
+        <hxbCodeGenerator    configuration="tpl" />
+    </target>
+
+    <target name="renameCondition">
+        <condition   property="renameProperty">
+            <istrue  value="${renamePkgPath}"/>
+        </condition>
+    </target>
+    <target name="renamePkgJava" depends="renameCondition"  if="renameProperty">
+        <move todir="output/src/main/java/${pkg.path}/" overwrite="true" >
+            <fileset dir="output/src/main/java/com/hxb/">
+                <include name="**/**" />
+            </fileset>
+        </move>
+    </target>
+    <target name="renamePkgRes" depends="renameCondition"  if="renameProperty">
+        <move todir="output/src/main/resources/mybatis/${pkg.path}/" overwrite="true" >
+            <fileset dir="output/src/main/resources/mybatis/com/hxb/">
+                <include name="**/**" />
+            </fileset>
+        </move>
+    </target>
+
+
+    <target  name="app"  depends="template, renamePkgJava, renamePkgRes" />
+
+    <target  name="clean">
+        <delete  dir="output" />
+        <delete>
+            <fileset  dir="."  includes="*.log" />
+        </delete>
+    </target>
+
+</project>
+
+

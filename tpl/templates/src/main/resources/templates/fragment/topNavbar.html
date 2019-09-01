@@ -1,0 +1,145 @@
+<#include "/include/parameters.ftl">
+<topNavbar th:fragment="top">
+    <script type="text/javascript">
+        try{ace.settings.check('navbar' , 'fixed')}catch(e){}
+    </script>
+
+    <div class="navbar-container" id="navbar-container">
+        <div class="navbar-header pull-left">
+            <a href="#" class="navbar-brand">
+                <small>
+                    <i class="icon-leaf"></i>
+                    <B>${companyName}</B>
+                </small>
+            </a><!-- /.brand -->
+        </div><!-- /.navbar-header -->
+
+        <div class="navbar-header pull-right" role="navigation">
+            <ul class="nav ace-nav">
+                <li class="grey">
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                        <i class="icon-tasks"></i>
+                        <span class="badge badge-grey">1</span>
+                    </a>
+
+                    <ul class="pull-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close">
+                        <li class="dropdown-header">
+                            <i class="icon-ok"></i>
+                            1个任务
+                        </li>
+
+                        <li>
+                            <a href="#">
+                                <div class="clearfix">
+                                    <span class="pull-left">软件升级</span>
+                                    <span class="pull-right">65%</span>
+                                </div>
+
+                                <div class="progress progress-mini ">
+                                    <div style="width:65%" class="progress-bar "></div>
+                                </div>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#">
+                                查看详情
+                                <i class="icon-arrow-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="purple">
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                        <i class="icon-bell-alt icon-animated-bell"></i>
+                        <span class="badge badge-important">1</span>
+                    </a>
+
+                    <ul class="pull-right dropdown-navbar navbar-pink dropdown-menu dropdown-caret dropdown-close">
+                        <li class="dropdown-header">
+                            <i class="icon-warning-sign"></i>
+                            1个通知
+                        </li>
+
+                        <li>
+                            <a href="#">
+                                <div class="clearfix">
+                                    <span class="pull-left">
+                                        <i class="btn btn-xs no-hover btn-pink icon-comment"></i>
+                                        新评论
+                                    </span>
+                                    <span class="pull-right badge badge-info">+12</span>
+                                </div>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#">
+                                查看详情
+                                <i class="icon-arrow-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="green">
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                        <i class="icon-envelope icon-animated-vertical"></i>
+                        <span class="badge badge-success">1</span>
+                    </a>
+
+                    <ul class="pull-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close">
+                        <li class="dropdown-header">
+                            <i class="icon-envelope-alt"></i>
+                            1条消息
+                        </li>
+
+                        <li>
+                            <a href="#">
+                                <img th:src="@{/img/user48.jpg}" class="msg-photo" alt="user" />
+                                <span class="msg-body">
+                                    <span class="msg-title">
+                                        <span class="blue">小萝卜:</span>
+                                        请准时到达约定地点，不见不散 ...
+                                    </span>
+
+                                    <span class="msg-time">
+                                        <i class="icon-time"></i>
+                                        <span>20分钟前</span>
+                                    </span>
+                                </span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#">
+                                查看详情
+                                <i class="icon-arrow-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="light-blue">
+                    <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+                        <img class="nav-user-photo" th:src="@{/img/user.jpg}" alt="Photo" />
+                        <span class="user-info">
+                            <small>欢迎,</small> <span sec:authentication="name"></span>
+                        </span>
+
+                        <i class="icon-caret-down"></i>
+                    </a>
+
+                    <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+                        <li><a href="#"><i class="icon-cog"></i>设置</a></li>
+                        <li><a th:href="@{/myuser/myDetail}"><i class="icon-user"></i>个人基本信息</a></li>
+                        <li><a th:href="@{/myuser/changePassword}"><i class="icon-key"></i>修改密码</a></li>
+                        <li class="divider"></li>
+                        <li><a th:href="@{/logout}"><i class="icon-power-off"></i>退出</a></li>
+                    </ul>
+                </li>
+            </ul><!-- /.ace-nav -->
+        </div><!-- /.navbar-header -->
+    </div><!-- /.navbar-container -->
+</top>

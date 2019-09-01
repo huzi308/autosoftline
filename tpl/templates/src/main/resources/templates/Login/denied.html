@@ -1,0 +1,192 @@
+<#include "/include/parameters.ftl">
+<#if noCopyright!="true">
+<#include "/include/copyright-xml.ftl">
+</#if>
+<!DOCTYPE html>
+<HTML xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<HEAD>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>denied</title>
+
+<div th:include="fragment/header :: jscss"></div>
+
+</HEAD>
+
+<BODY>
+
+<DIV class="navbar navbar-default" id="navbar" th:include="fragment/topNavbar :: top">
+</DIV><!-- /.navbar -->
+
+<DIV class="main-container" id="main-container">
+
+    <script type="text/javascript">
+        try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+    </script>
+
+    <DIV class="main-container-inner">
+
+        <a class="menu-toggler" id="menu-toggler" href="#">
+            <span class="menu-text"></span>
+        </a>
+
+        <DIV class="sidebar" id="sidebar">
+
+            <script type="text/javascript">
+                try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
+            </script>
+
+            <div class="sidebar-shortcuts" id="sidebar-shortcuts">
+                <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
+                    <button class="btn btn-success"><i class="icon-signal"></i></button>
+                    <button class="btn btn-info"><i class="icon-pencil"></i></button>
+                    <button class="btn btn-warning"><i class="icon-group"></i></button>
+                    <button class="btn btn-danger"><i class="icon-cogs"></i></button>
+                </div>
+
+                <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
+                    <span class="btn btn-success"></span>
+                    <span class="btn btn-info"></span>
+                    <span class="btn btn-warning"></span>
+                    <span class="btn btn-danger"></span>
+                </div>
+            </div><!-- #sidebar-shortcuts -->
+
+            <ul class="nav nav-list">
+
+                <li>
+                    <a th:href="@{/}"><i class="icon-home green"></i><span class="menu-text"> 首页 </span></a>
+                </li>
+
+                <li>
+                    <a href="#" class="dropdown-toggle"><i class="icon-list"></i><span class="menu-text"> 业务对象管理 </span><b class="arrow icon-angle-down"></b></a>
+                    <ul class="submenu">
+            <#list doc.root.table as table2><#assign className2=table2.@objctName?trim ><#assign classNameLower2=className2?lower_case >
+                <#if className2!="Myuser" && className2!="Role" && className2!="Permission" && className2!="Syslog" && className2!="Sysdict" && className2!="Department" && className2!="Area" && className2!="Uploadfile" && className2!="Fmfield">
+                        <li>
+                            <a th:href="@{/${classNameLower2}/list}">
+                                <i class="icon-double-angle-right"></i><i class="icon-list blue"></i> ${className2}列表
+                            </a>
+                        </li>
+                </#if>
+            </#list>
+                    </ul>
+                </li>
+
+    <#assign className="" >
+    <#list doc.root.table as table2><#assign className2=table2.@objctName?trim ><#assign classNameLower2=className2?lower_case >
+        <#if className2=="Myuser" || className2=="Role" || className2=="Permission" || className2=="Syslog" || className2=="Sysdict" || className2=="Department" || className2=="Area">
+            <#if className2==className>
+                <li sec:authorize="hasRole('ROLE_Admin')"  class="active">
+            <#else>
+                <li sec:authorize="hasRole('ROLE_Admin')">
+            </#if>
+                    <a th:href="@{/${classNameLower2}/list}">
+                        <i class="icon-book blue"></i><span class="menu-text">${className2}管理</span>
+                    </a>
+                </li>
+        </#if>
+    </#list>
+    <#if dataBaseName!="h2">
+                <li sec:authorize="hasRole('ROLE_Admin')">
+                    <a th:href="@{/druid}" target="WinDruid">
+                        <i class="icon-bar-chart blue"></i><span class="menu-text">数据库监控</span>
+                    </a>
+                </li>
+    </#if>
+                <li>
+                    <a th:href="@{/uploadfile/list}" target="WinUpload">
+                        <i class="icon-upload"></i><span class="menu-text">文件上传</span>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/logout}">
+                        <i class="icon-off red"></i><span class="menu-text">退出</span>
+                    </a>
+                </li>
+
+            </ul><!-- /.nav-list -->
+
+            <div class="sidebar-collapse" id="sidebar-collapse">
+                <i class="icon-double-angle-left red" data-icon1="icon-double-angle-left red" data-icon2="icon-double-angle-right red"></i>
+            </div>
+
+            <script type="text/javascript">
+                try{ace.settings.check('sidebar' , 'collapsed')}catch(e){}
+            </script>
+
+        </DIV>
+
+
+        <div class="main-content">
+
+            <div class="breadcrumbs" id="breadcrumbs">
+                <script type="text/javascript">
+                    try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+                </script>
+
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="icon-home home-icon green"></i>
+                        <a href="/">首页</a>
+                    </li>
+                </ul><!-- .breadcrumb -->
+
+                <div class="nav-search" id="nav-search">
+                    <form class="form-search">
+                        <span class="input-icon">
+                            <input type="text" placeholder="搜索..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
+                            <i class="icon-search nav-search-icon"></i>
+                        </span>
+                    </form>
+                </div><!-- #nav-search -->
+            </div>
+
+            <div class="page-content">
+                <div class="row">
+                    <div class="col-xs-12">
+                    <!-- PAGE CONTENT BEGINS -->
+
+                        <UL id="myTab" class="nav nav-tabs">
+                            <li class="active">
+                                <a href="#tab_id01"  data-toggle="tab"><i class="icon-exclamation-sign red bigger-140"></i>拒绝访问</a>
+                            </li>
+                        </UL>
+
+                        <DIV id="myTabContent" class="tab-content">
+
+                            <DIV id="tab_id01" class="tab-pane fade in active">
+
+                                <DIV class="row">
+                                    <center><H2><font color="red">没有访问权限！</font></H2></center><br/><br/>
+                                </DIV><!-- /.row -->
+
+                            </DIV><!-- /.tab-pane -->
+                            
+                        </DIV><!-- /.tab-content -->
+
+                    <!-- PAGE CONTENT ENDS -->
+                    </div><!-- /.col-xs-12 -->
+
+                </div><!-- /.row -->
+
+            </div><!-- /.page-content -->
+
+        </div><!-- /.main-content -->
+
+    </DIV><!-- /.main-container-inner -->
+
+    <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+        <i class="icon-double-angle-up icon-only bigger-110"></i>
+    </a>
+
+</DIV><!-- /.main-container -->
+
+<div th:include="fragment/footer :: js"></div>
+
+</BODY>
+</HTML>

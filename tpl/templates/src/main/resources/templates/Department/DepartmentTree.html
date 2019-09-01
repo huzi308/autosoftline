@@ -1,0 +1,125 @@
+<#include "/include/parameters.ftl">
+<#if noCopyright!="true">
+<#include "/include/copyright-xml.ftl">
+</#if>
+<!DOCTYPE html>
+<HTML xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<HEAD>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<TITLE>Department Tree</TITLE>
+
+<link rel="stylesheet" media="screen" th:href="@{/ztree-3.5.12/css/demo.css}" type="text/css">
+<link rel="stylesheet" media="screen" th:href="@{/ztree-3.5.12/css/zTreeStyle/zTreeStyle.css}" type="text/css">
+
+</HEAD>
+
+<BODY>
+
+<div class="content_wrap">
+    <div class="zTreeDemoBackground left">
+        <!--修改demo.css中的ul.ztree{...;width:250px;height:460px;...}，可以调整树占用的空间-->
+        <ul id="treeDemo" class="ztree"></ul><br>
+        <ul>
+            <li> &nbsp;&nbsp;&nbsp;&nbsp;  <button onclick="requestJson()">Send Json POST Request</button>  </li>
+        </ul>
+    </div>
+    <div class="right">
+        <div>
+        <ul class="info">
+            <li class="title"><h2>信息说明</h2>
+            </li>
+        </ul>
+        <ul id="code" style="height:80px;"></ul>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript" th:src="@{/ztree-3.5.12/js/jquery-1.4.4.min.js}"></script>
+<script type="text/javascript" th:src="@{/ztree-3.5.12/js/jquery.ztree.core-3.5.js}"></script>
+<script type="text/javascript" th:src="@{/ztree-3.5.12/js/jquery.ztree.excheck-3.5.js}"></script>
+
+<SCRIPT th:inline="javascript">
+/*<![CDATA[*/
+
+    var setting = {
+    
+        check:{
+            //enable:false
+            enable:true
+        },
+        
+        data: {
+            simpleData: {
+                enable: true,
+                idKey:"id",
+                pIdKey:"parentId"
+            }
+        },
+        
+        callback:{
+            onCheck:onCheck
+        }
+            
+    };
+
+    var zNodes =[[${dollar}{treeData}]];
+
+    ${dollar}(document).ready(function(){
+        ${dollar}.fn.zTree.init(${dollar}("#treeDemo"), setting, zNodes);
+    });
+
+    function onCheck(e,treeId,treeNode){
+        var treeObj=${dollar}.fn.zTree.getZTreeObj("treeDemo"),
+        nodes=treeObj.getCheckedNodes(true),
+        val="";
+        id="";
+        for(var i=0;i<nodes.length;i++){
+            val += nodes[i].name + ", ";
+            id += nodes[i].id + ", ";
+        }
+        ${dollar}("#code").empty();
+        ${dollar}("#code").append("<li> val[] = " + val + "</li>");
+        ${dollar}("#code").append("<li> id[] = " + id + "</li>");
+    }
+
+/*]]>*/
+</SCRIPT>
+
+<SCRIPT  type="text/javascript">
+
+function requestJson() {
+
+    // 测试：通过POST方式提交Json格式数据给后台Controller，后台Controller把接收到的Json格式数据对象化后插入数据库中。
+    var rnd = Math.floor(Math.random()*100+100);
+    var param = {"name":"部门"+rnd,"code":"909"+rnd,"enabled":1};
+
+    ${dollar}.ajax({
+        type:"POST",
+        url:"/department/json",
+        contentType:"application/json;charset=utf-8",
+        data:JSON.stringify(param),
+        success:function(returndata01){
+            //alert( "return01data=" + returndata01 );
+            ${dollar}("#code").empty();
+            ${dollar}("#code").append("通过Post提交以下Json数据给Controller，<font color=red>数据Insert成功：</font><br><br> name=领域" + rnd + ",  code=909" + rnd + ",  enabled=1");
+        },
+        error:function(returndata02){
+            //alert( "return02data=" + returndata02 );
+            ${dollar}("#code").empty();
+            ${dollar}("#code").append("通过Post提交Json数据给Controller，<font color=red>数据Insert失败！</font>");
+        }
+    });
+
+}
+
+</SCRIPT>
+
+
+</BODY>
+</HTML>

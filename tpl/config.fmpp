@@ -1,0 +1,21 @@
+recommendedDefaults: 0.9.16
+
+sourceRoot: templates
+
+outputRoot: ../output
+
+logFile: ../hxb.log
+
+modes:[
+    ignore(include/*.ftl)
+    copy(src/main/resources/static/**/*, src/main/resources/word_tpl/*)
+    execute(pom.xml, db/*.sql, src/main/**/*.*)
+]
+
+data:{
+    doc: xml(../../data/data.xml)
+}
+
+sourceEncoding:utf-8
+outputEncoding:utf-8
+

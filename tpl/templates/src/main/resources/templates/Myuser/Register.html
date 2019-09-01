@@ -1,0 +1,143 @@
+<#include "/include/parameters.ftl">
+<#if hasRegister!="true" || isCasClient=="true" >
+<@pp.dropOutputFile /><#--hasRegister=false 或者 isCasClient=true,则不生成此文件-->
+</#if>
+<#if noCopyright!="true">
+<#include "/include/copyright-xml.ftl">
+</#if>
+<!DOCTYPE html>
+<HTML xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<HEAD>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>Register</title>
+
+<div th:include="fragment/header :: jscss"></div>
+
+<script type="text/javascript">
+
+    function checkUser(){
+        var userName=document.getElementById("username").value;
+        var password1=document.getElementById("password1").value;
+        var password2=document.getElementById("password2").value;
+        if(userName==""){
+            document.getElementById("pageMsg").innerHTML="用户名不能为空！";
+            document.signupform.username.focus();
+            return false;
+        }
+        if(userName.length<5 || userName.length>12){
+            document.getElementById("pageMsg").innerHTML="用户名长度5-12位！";
+            document.signupform.username.focus();
+            return false;
+        }
+        if(password1=="" || password2==""){
+            document.getElementById("pageMsg").innerHTML="密码不能为空！";
+            document.signupform.password.focus();
+            return false;
+        }
+        if(password1 !=password2){
+            document.getElementById("pageMsg").innerHTML="密码不一致！";
+            document.signupform.password.focus();
+            return false;
+        }
+        return true;
+    }
+
+</script>
+
+</HEAD>
+
+<BODY onload='document.signupform.username.focus();'  class="login-layout" style="background:url('/img/bgok.jpg');">
+<div class="main-container">
+    <div class="main-content">
+        <div class="row">
+            <div class="col-sm-10 col-sm-offset-1">
+                <div class="login-container">
+                    <div class="center">
+                        <span class="white"><B><h1>${companyName}</h1></B></span>
+                        <h4 class="white">Springboot+Security+MyBatis(<#if dataBaseName=="oracle">Oracle版<#elseif dataBaseName=="mysql">MySQL版<#elseif dataBaseName=="h2">H2版</#if>)</h4>
+                    </div>
+
+                    <div class="space-6"></div>
+
+                    <div class="position-relative">
+                        <div id="login-box" class="login-box visible widget-box no-border">
+                            <div class="widget-body">
+                                <div class="widget-main">
+                                    <h4 class="header blue lighter bigger"><i class="icon-group blue bigger-100"></i> 新用户注册</h4>
+
+                                    <div class="space-6"></div>
+
+                                    <center><font color="red"> <div id="pageMsg"></div><div th:utext="${dollar}{errorMsg}"></div></font></center>
+
+                                    <FORM name="signupform" action="" method="POST">
+                                        <fieldset>
+                                            <label class="block clearfix">
+                                                <span class="block input-icon input-icon-right">
+                                                    <input type="text"  id="username" name="username" value="" class="form-control" placeholder="用户名" onkeyup="this.value=this.value.replace(/[^a-z0-9]/g,'');" />
+                                                    <i class="icon-user"></i>
+                                                </span><font color="red">只能5-12位小写字母和数字！</font>
+                                            </label>
+
+                                            <label class="block clearfix">
+                                                <span class="block input-icon input-icon-right">
+                                                    <input type="password"  id="password1" name="password1" value="" class="form-control" placeholder="密码" />
+                                                    <i class="icon-lock"></i>
+                                                </span>
+                                            </label>
+
+                                            <label class="block clearfix">
+                                                <span class="block input-icon input-icon-right">
+                                                    <input type="password"  id="password2" name="password2" value="" class="form-control" placeholder="确认密码" />
+                                                    <i class="icon-retweet"></i>
+                                                </span>
+                                            </label>
+
+                                            <label class="block">
+                                                <input type="checkbox" checked="true" id="agreement" name="agreement" class="ace" />
+                                                <span class="lbl">
+                                                    注册协议条款<a href="#">用户协议</a>
+                                                </span>
+                                            </label>
+
+                                            <div class="space-12"></div>
+
+                                            <div class="clearfix">
+                                                <button type="reset" class="width-30 pull-left btn btn-sm">
+                                                    <i class="icon-refresh"></i> 取消
+                                                </button>
+                                                <input type="hidden" name="save" value="Yes" />
+                                                <button name="submit" type="submit" class="width-65 pull-right btn btn-sm btn-success"  onClick="return checkUser();">
+                                                    注册 <i class="icon-arrow-right icon-on-right"></i>
+                                                </button>
+                                            </div>
+                                        </fieldset>
+                                    </FORM>
+
+                                </div><!-- /widget-main -->
+
+                                <div class="toolbar center clearfix">
+                                    <div>
+                                        <a th:href="@{/login}"  class="user-signup-link"><i class="icon-arrow-left"></i> 返回登录</a>
+                                    </div>
+                                </div>
+
+                            </div><!-- /widget-body -->
+                        </div><!-- /login-box -->
+
+
+                    </div><!-- /position-relative -->
+                </div>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div>
+</div><!-- /.main-container -->
+
+<div th:include="fragment/footer :: js"></div>
+
+</BODY>
+</HTML>

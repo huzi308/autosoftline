@@ -1,0 +1,163 @@
+<root>
+
+    <!-- 配置【实体业务对象/属性】与【数据库表/字段】的对应关系 -->
+
+    <!-- #################################################################################################### -->
+    <!-- 以下是【业务级】使用的数据库表，根据实际业务进行修改！-->
+    <!-- 注意：如果业务表引用了另外一个业务表，则被引用的业务表应该放在前面（先处理！）-->
+
+    <!--
+    <table ...>...</table>使用说明：
+        objctName = 持久化对象/类名;建议首字母大写;
+        tableName = 该持久化对象对应的数据库表名,可与objctName不同;
+        tbComment = 该数据库表的注释;
+
+        1. name作用：定义属性名;建议全部小写,名称不要太长;
+        2. type作用：该属性名的Java数据类型(共9种);
+            1)可为6种Java标准类型:String、Date、Long、Integer、Double、Boolean;
+            2)可为3种自定义类型:Sysdict、ForeignKey、ManyToMany;
+        3. colName作用：该属性名对应的数据库字段名;
+            1)当type为Sysdict或ForeignKey时,colName=name+"_id";
+            2)当type为ManyToMany时,colName="";
+            3)当type为其它情况时,colName=name;
+        4. dbType作用：该属性名对应的数据库字段类型;
+            1)当type为String类型时,
+              dbType可为:
+                a) dbType = varchar(nnn), 界面控件为<input>
+                b) dbType = Text, 界面控件为<textarea/>, 对H2或mysql库=Text, 对oracle库=varchar(1000)
+                c) dbType="", 不指定时=varchar(255), 界面控件为<input>
+            2)当type为Date类型时,dbType可为Date或DateTime或Timestamp类型;
+              dbType区别是：
+                a) Date格式是(yyyy-MM-dd)
+                b) DateTime或Timestamp格式是(yyyy-MM-dd HH:mm:ss)
+                c) Date或DateTime允许为空(param="null")
+                d) Timestamp不允许为空(param="")
+            3)当type为其它(Long、Integer、Double、Boolean、Sysdict、ForeignKey、ManyToMany)类型时,dbType=""(不需要指定类型);
+        5. colComment作用：colComment值不能为空!!!
+            1)在页面上列表显示该字段的数据时，表格的标题=colComment值;
+            2)当type为String类型时，为该数据库字段生成的测试数据 = colComment值+顺序号;
+        6. param作用：
+            1)当type为Sysdict类型时，param值为字典分类号XX00;
+            2)当type为ForeignKey类型时，param值为被引用的objctName对象名;
+            3)当type为ManyToMany类型时，param值为被关联的objctName对象名;
+            4)当type为其它(String、Date、Long、Integer、Double、Boolean)类型时，param值为"null"表示该字段允许为空，值为""表示该字段不允许为空。
+    -->
+
+
+    <table     objctName="School"        tableName="tab_School"      tbComment="学校" >
+        <prop    name="id"                 type="Long"                 colName="id"              dbType=""                 colComment="ID"          param="" />
+        <prop    name="name"               type="String"               colName="name"            dbType="varchar(64)"      colComment="学校名称"    param="" />
+        <prop    name="address"            type="String"               colName="address"         dbType="varchar(128)"     colComment="学校地址"    param="null" />
+        <prop    name="amount"             type="Integer"              colName="amount"          dbType=""                 colComment="学生总数"    param="null" />
+        <prop    name="area"               type="Double"               colName="area"            dbType=""                 colComment="占地面积"    param="null" />
+        <prop    name="createddate"        type="Date"                 colName="createddate"     dbType="Date"             colComment="建校日期"    param="null" />
+        <prop    name="province"           type="Sysdict"              colName="province_id"     dbType=""                 colComment="所属省市"    param="1100" />
+        <prop    name="summary"            type="String"               colName="summary"         dbType="varchar(500)"     colComment="简介"        param="null" />
+        <prop    name="createdtime"        type="Date"                 colName="createdtime"     dbType="Timestamp"        colComment="创建时间"    param="" />
+        <prop    name="memo"               type="String"               colName="memo"            dbType="varchar(64)"      colComment="备注"        param="null" />
+    </table>
+
+    <table     objctName="Course"        tableName="tab_Course"      tbComment="课程" >
+        <prop    name="id"                 type="Long"                 colName="id"              dbType=""                 colComment="ID"          param="" />
+        <prop    name="name"               type="String"               colName="name"            dbType="varchar(64)"      colComment="课程名称"    param="" />
+        <prop    name="hour"               type="Integer"              colName="hour"            dbType=""                 colComment="学时数"      param="" />
+        <prop    name="credit"             type="Integer"              colName="credit"          dbType=""                 colComment="学分"        param="" />
+        <prop    name="summary"            type="String"               colName="summary"         dbType="varchar(500)"     colComment="课程简介"    param="null" />
+        <prop    name="createdtime"        type="Date"                 colName="createdtime"     dbType="Timestamp"        colComment="创建时间"    param="" />
+        <prop    name="memo"               type="String"               colName="memo"            dbType="varchar(64)"      colComment="备注"        param="null" />
+    </table>
+
+    <table     objctName="Student"       tableName="tab_Student"     tbComment="学生" >
+        <prop    name="id"                 type="Long"                 colName="id"              dbType=""                 colComment="ID"          param="" />
+        <prop    name="name"               type="String"               colName="name"            dbType="varchar(64)"      colComment="姓名"        param="" />
+        <prop    name="gender"             type="Sysdict"              colName="gender_id"       dbType=""                 colComment="性别"        param="1200" />
+        <prop    name="birthday"           type="Date"                 colName="birthday"        dbType="Date"             colComment="出生年月"    param="null" />
+        <prop    name="registertime"       type="Date"                 colName="registertime"    dbType="DateTime"         colComment="注册时间"    param="null" />
+        <prop    name="province"           type="Sysdict"              colName="province_id"     dbType=""                 colComment="籍贯"        param="1100" />
+        <prop    name="nation"             type="Sysdict"              colName="nation_id"       dbType=""                 colComment="民族"        param="1300" />
+        <prop    name="school"             type="ForeignKey"           colName="school_id"       dbType=""                 colComment="所在学校"    param="School" />
+        <prop    name="courses"            type="ManyToMany"           colName=""                dbType=""                 colComment="所选课程"    param="Course" />
+        <prop    name="createdtime"        type="Date"                 colName="createdtime"     dbType="Timestamp"        colComment="创建时间"    param="" />
+        <prop    name="memo"               type="String"               colName="memo"            dbType="varchar(64)"      colComment="备注"        param="null" />
+    </table>
+
+
+    <!-- 以上是【业务级】使用的数据库表，根据实际业务进行修改！-->
+    <!-- #################################################################################################### -->
+
+
+
+
+    <!-- #################################################################################################### -->
+    <!-- 以下是系统级使用的数据库表，不能修改！！！！！！ -->
+
+    <table     objctName="Syslog"        tableName="Syslog"          tbComment="系统日志" >
+        <prop    name="id"                 type="Long"                 colName="id"              dbType=""                 colComment="ID"          param="" />
+        <prop    name="operation"          type="String"               colName="operation"       dbType="varchar(16)"      colComment="操作"        param="" />
+        <prop    name="tableName"          type="String"               colName="tableName"       dbType="varchar(32)"      colComment="库表"        param="" />
+        <prop    name="objctId"            type="Long"                 colName="objctId"         dbType=""                 colComment="记录ID"      param="null" />
+        <prop    name="objctValue"         type="String"               colName="objctValue"      dbType="Text"             colComment="记录值"      param="null" />
+        <prop    name="operateBy"          type="String"               colName="operateBy"       dbType="varchar(32)"      colComment="操作人"      param="null" />
+        <prop    name="ip"                 type="String"               colName="ip"              dbType="varchar(32)"      colComment="IP地址"      param="null" />
+        <prop    name="operateTime"        type="Date"                 colName="operateTime"     dbType="Timestamp"        colComment="操作时间"    param="" />
+    </table>
+
+    <table     objctName="Sysdict"       tableName="Sysdict"         tbComment="系统字典" >
+        <prop    name="id"                 type="Long"                 colName="id"              dbType=""                 colComment="ID"          param="" />
+        <prop    name="name"               type="String"               colName="name"            dbType="varchar(32)"      colComment="字典名称"    param="" />
+        <prop    name="code"               type="Long"                 colName="code"            dbType=""                 colComment="字典编码"    param="" />
+        <prop    name="enabled"            type="Boolean"              colName="enabled"         dbType=""                 colComment="是否启用"    param="" />
+    </table>
+
+    <table     objctName="Area"          tableName="Area"            tbComment="业务领域" >
+        <prop    name="id"                 type="Long"                 colName="id"              dbType=""                 colComment="ID"          param="" />
+        <prop    name="name"               type="String"               colName="name"            dbType="varchar(32)"      colComment="领域方向名称"    param="" />
+        <prop    name="code"               type="String"               colName="code"            dbType="varchar(30)"      colComment="领域编码"    param="" />
+        <prop    name="enabled"            type="Boolean"              colName="enabled"         dbType=""                 colComment="是否启用"    param="" />
+    </table>
+
+    <table     objctName="Department"    tableName="Department"      tbComment="部门" >
+        <prop    name="id"                 type="Long"                 colName="id"              dbType=""                 colComment="ID"          param="" />
+        <prop    name="name"               type="String"               colName="name"            dbType="varchar(32)"      colComment="部门名称"    param="" />
+        <prop    name="code"               type="String"               colName="code"            dbType="varchar(30)"      colComment="部门编码"    param="" />
+        <prop    name="enabled"            type="Boolean"              colName="enabled"         dbType=""                 colComment="是否启用"    param="" />
+    </table>
+
+    <table     objctName="Permission"    tableName="Permission"      tbComment="权限" >
+        <prop    name="id"                 type="Long"                 colName="id"              dbType=""                 colComment="ID"          param="" />
+        <prop    name="perm"               type="String"               colName="perm"            dbType="varchar(64)"      colComment="权限名称"    param="" />
+    </table>
+
+    <table     objctName="Role"          tableName="Role"            tbComment="角色" >
+        <prop    name="id"                 type="Long"                 colName="id"              dbType=""                 colComment="ID"          param="" />
+        <prop    name="rolename"           type="String"               colName="rolename"        dbType="varchar(64)"      colComment="角色名"      param="" />
+        <prop    name="permissions"        type="ManyToMany"           colName=""                dbType=""                 colComment="权限列表"    param="Permission" />
+    </table>
+
+    <table     objctName="Myuser"        tableName="Myuser"          tbComment="用户" >
+        <prop    name="id"                 type="Long"                 colName="id"              dbType=""                 colComment="ID"          param="" />
+        <prop    name="username"           type="String"               colName="username"        dbType="varchar(64)"      colComment="用户名"      param="" />
+        <prop    name="password"           type="String"               colName="password"        dbType="varchar(64)"      colComment="密码"        param="" />
+        <prop    name="createdtime"        type="Date"                 colName="createdtime"     dbType="Timestamp"        colComment="注册时间"    param="" />
+        <prop    name="enabled"            type="Boolean"              colName="enabled"         dbType=""                 colComment="是否启用"    param="" />
+        <prop    name="roles"              type="ManyToMany"           colName=""                dbType=""                 colComment="角色列表"    param="Role" />
+        <prop    name="dept"               type="ForeignKey"           colName="dept_id"         dbType=""                 colComment="所属部门"    param="Department" />
+        <prop    name="areas"              type="ManyToMany"           colName=""                dbType=""                 colComment="所属领域"    param="Area" />
+    </table>
+
+    <table     objctName="Uploadfile"    tableName="Uploadfile"      tbComment="文件上传" >
+        <prop    name="id"                 type="Long"                 colName="id"              dbType=""                 colComment="ID"          param="" />
+        <prop    name="filename"           type="String"               colName="filename"        dbType="varchar(128)"     colComment="文件名"      param="" />
+        <prop    name="path"               type="String"               colName="path"            dbType="varchar(1000)"    colComment="路径"        param="" />
+        <prop    name="filesize"           type="Long"                 colName="filesize"        dbType=""                 colComment="文件大小"    param="null" />
+        <prop    name="uploadtime"         type="Date"                 colName="uploadtime"      dbType="Timestamp"        colComment="上传时间"    param="" />
+        <prop    name="username"           type="String"               colName="username"        dbType="varchar(64)"      colComment="上传者"      param="" />
+        <prop    name="downloadsum"        type="Integer"              colName="downloadsum"     dbType=""                 colComment="下载次数"    param="null" />
+    </table>
+
+    <!-- #################################################################################################### -->
+    <!-- 以上是系统级使用的数据库表，不能修改！！！！！！ -->
+    <!-- #################################################################################################### -->
+
+</root>
+

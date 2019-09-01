@@ -1,0 +1,131 @@
+<#include "/include/parameters.ftl">
+<#if isCasClient=="true"><#--isCasClient=true,则不生成此文件-->
+<@pp.dropOutputFile />
+</#if>
+<#if noCopyright!="true">
+<#include "/include/copyright-xml.ftl">
+</#if>
+<!DOCTYPE html>
+<HTML xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<HEAD>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>Login</title>
+
+<div th:include="fragment/header :: jscss"></div>
+
+<script type="text/javascript">
+
+    function checkUser(){
+        var userName=document.getElementById("username").value;
+        if(userName==""){
+            document.getElementById("pageMsg").innerHTML="用户名不能为空！";
+            document.loginform.username.focus();
+            return false;
+        }
+        return true;
+    }
+
+<#if hasKaptcha=="true">
+    function reloadVerifyCode(){
+        var timenow=new Date().getTime();
+        var safeCodeImg=document.getElementById("kaptchaImage");
+        if(safeCodeImg){
+            safeCodeImg.src="/getKaptchaImage?rand="+timenow;
+        }
+    }
+
+</#if>
+</script>
+
+</HEAD>
+
+<BODY onload='document.loginform.username.focus();'  class="login-layout" style="background:url('/img/bgok.jpg');">
+<div class="main-container">
+    <div class="main-content">
+        <div class="row">
+            <div class="col-sm-10 col-sm-offset-1">
+                <div class="login-container">
+                    <div class="center">
+                        <span class="white"><B><h1>${companyName}</h1></B></span>
+                        <h4 class="white">Springboot+Security+MyBatis(<#if dataBaseName=="oracle">Oracle版<#elseif dataBaseName=="mysql">MySQL版<#elseif dataBaseName=="h2">H2版</#if>)</h4>
+                    </div>
+
+                    <div class="space-6"></div>
+
+                    <div class="position-relative">
+                        <div id="login-box" class="login-box visible widget-box no-border">
+                            <div class="widget-body">
+                                <div class="widget-main">
+                                    <h4 class="header blue lighter bigger"><i class="icon-user green bigger-140"></i> 用户登录</h4>
+
+                                    <div class="space-6"></div>
+
+                                    <center><font color="red"><div id="pageMsg"></div><div th:if="${dollar}{param.error}" th:text="用户名或密码或验证码错误！"></div></font></center>
+
+                                    <FORM name="loginform" th:action="@{/login}" method="POST">
+                                        <fieldset>
+                                            <label class="block clearfix">
+                                                <span class="block input-icon input-icon-right">
+                                                    <input type="text" id="username" name="username"  value="admin" class="form-control" placeholder="用户名" />
+                                                    <i class="icon-user"></i>
+                                                </span>
+                                            </label>
+
+                                            <label class="block clearfix">
+                                                <span class="block input-icon input-icon-right">
+                                                    <input type="password" id="password" name="password"  value="111111" class="form-control" placeholder="密码" />
+                                                    <i class="icon-key"></i>
+                                                </span>
+                                            </label>
+                                        <#if hasKaptcha=="true">
+                                            <label class="block clearfix">
+                                                <span class="block input-icon input-icon-right">
+                                                    <input type="text" id="kaptcha" name='kaptcha'  value=''  style="width:180px; height:34px;"  placeholder="验证码" />
+                                                    <img src="/getKaptchaImage"  id="kaptchaImage"  style="margin-bottom: 4px"  onClick="reloadVerifyCode();" />
+                                                </span>
+                                            </label>
+
+                                        </#if>
+                                            <div class="space"></div>
+
+                                            <div class="clearfix">
+                                                <label class="inline">
+                                                    <input  id="remember-me"  name="remember-me"  type="checkbox"  class="ace" />
+                                                    <span class="lbl"> 下次自动登录</span>
+                                                </label>
+                                                <button name='submit' type='submit' class="width-40 pull-right btn btn-sm btn-primary"  onClick="return checkUser();" />
+                                                    <i class="icon-home  bigger-140"></i> <B>登 录</B>
+                                                </button>
+                                            </div>
+
+                                            <div class="space-4"></div>
+                                        </fieldset>
+                                    </FORM>
+
+                                </div><!-- /widget-main -->
+                            <#if hasRegister=="true">
+                                <div class="toolbar center clearfix">
+                                    <div>
+                                        <a th:href="@{/myuser/register}"  class="user-signup-link"><i class="icon-arrow-left"></i> 用户注册</a>
+                                    </div>
+                                </div>
+                            </#if>
+                            </div><!-- /widget-body -->
+                        </div><!-- /login-box -->
+
+                    </div><!-- /position-relative -->
+                </div>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div>
+</div><!-- /.main-container -->
+
+<div th:include="fragment/footer :: js"></div>
+
+</BODY>
+</HTML>
